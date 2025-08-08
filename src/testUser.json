@@ -1,0 +1,8 @@
+{
+  "gender": "female",
+  "past_purchases": [
+    {"category": "jewelery", "price": 120},
+    {"category": "electronics", "price": 500},
+    {"category": "jewelery", "price": 200}
+  ]
+}

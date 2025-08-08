@@ -1,9 +1,21 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const Navbar = () => {
     const state = useSelector(state => state.handleCart)
+    const [searchQuery, setSearchQuery] =  useState('')
+    const navigate = useNavigate()
+
+    // Search for products using URL 
+    const handleSearch = (e) => {
+        e.preventDefault()
+        if (searchQuery.trim()) {
+            navigate(`/product?search=${encodeURIComponent(searchQuery.trim())}`)
+            setSearchQuery('')
+    }
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light py-3 sticky-top">
             <div className="container">
@@ -27,6 +39,23 @@ const Navbar = () => {
                             <NavLink className="nav-link" to="/contact">Contact</NavLink>
                         </li>
                     </ul>
+
+                    <form className="d-flex mx-auto" onSubmit={handleSearch} style={{maxWidth: '400px', flex: '1'}}>
+                        <div className="input-group">
+                        <input
+                            className="form-control"
+                            type="search"
+                            placeholder="Search products..."
+                            aria-label="Search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <button className="btn btn-outline-secondary" type="submit">
+                            <i className="fa fa-search"></i>
+                        </button>
+                        </div>
+                    </form>
+
                     <div className="buttons text-center">
                         <NavLink to="/login" className="btn btn-outline-dark m-2"><i className="fa fa-sign-in-alt mr-1"></i> Login</NavLink>
                         <NavLink to="/register" className="btn btn-outline-dark m-2"><i className="fa fa-user-plus mr-1"></i> Register</NavLink>

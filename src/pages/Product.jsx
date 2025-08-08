@@ -7,18 +7,29 @@ import { addCart } from "../redux/action";
 
 import { Footer, Navbar } from "../components";
 
+
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
 
   const dispatch = useDispatch();
 
   const addProduct = (product) => {
     dispatch(addCart(product));
   };
+
+  // Recommendation system implementation using Flask API endpoints
+  useEffect(() => {
+  fetch('http://127.0.0.1:5000/recommend')
+    .then(res => res.json())
+    .then(data => setRecommendations(data))
+    .catch(e => console.error("Fetch error:", e));
+}, []);
+
 
   useEffect(() => {
     const getProduct = async () => {
@@ -169,25 +180,63 @@ const Product = () => {
     );
   };
   return (
-    <>
-      <Navbar />
-      <div className="container">
-        <div className="row">{loading ? <Loading /> : <ShowProduct />}</div>
-        <div className="row my-5 py-5">
-          <div className="d-none d-md-block">
-          <h2 className="">You may also Like</h2>
-            <Marquee
-              pauseOnHover={true}
-              pauseOnClick={true}
-              speed={50}
+     <>
+    <Navbar />
+    <div className="container">
+      <div className="row" style={{ display: "flex" }}>
+        <div style={{ flex: 3 }}>
+          {loading ? <Loading /> : <ShowProduct />}
+        </div>
+
+        {/* Right sidebar for recommendations */}
+        <aside
+          style={{
+            flex: 1,
+            marginLeft: "20px",
+            borderLeft: "1px solid #ccc",
+            paddingLeft: "15px",
+            maxWidth: "300px",
+            height: "fit-content",
+            position: "sticky",
+            top: "80px",
+          }}
+        >
+          <h4>Recommended for you</h4>
+          {recommendations.map((item) => (
+            <div
+              key={item.id}
+              style={{
+                marginBottom: "1rem",
+                borderBottom: "1px solid #eee",
+                paddingBottom: "10px",
+              }}
             >
-              {loading2 ? <Loading2 /> : <ShowSimilarProduct />}
-            </Marquee>
-          </div>
+              <img
+                src={item.image}
+                alt={item.title}
+                style={{ width: "15%", height: "auto", objectFit: "contain" }}
+              />
+              <h6>{item.title.substring(0, 25)}...</h6>
+              <p>${item.price}</p>
+              <Link to={"/product/" + item.id} className="btn btn-sm btn-dark">
+                View
+              </Link>
+            </div>
+          ))}
+        </aside>
+      </div>
+
+      <div className="row my-5 py-5">
+        <div className="d-none d-md-block">
+          <h2>You may also Like</h2>
+          <Marquee pauseOnHover={true} pauseOnClick={true} speed={50}>
+            {loading2 ? <Loading2 /> : <ShowSimilarProduct />}
+          </Marquee>
         </div>
       </div>
-      <Footer />
-    </>
+    </div>
+    <Footer />
+  </>
   );
 };
 

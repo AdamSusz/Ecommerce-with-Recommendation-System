@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
+import { useLocation } from "react-router-dom";
 
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -8,17 +9,42 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
+import staticProducts from "../products.json";
+
 const Products = () => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(data);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   let componentMounted = true;
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const addProduct = (product) => {
     dispatch(addCart(product));
   };
+
+  // Get query from URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const search = urlParams.get('search');
+    if (search) {
+      setSearchTerm(search);
+    }
+  }, [location.search]);
+
+  // Apply filter every time there is an update
+  useEffect(() => {
+    if (searchTerm && data.length > 0) {
+      const searchResults = data.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilter(searchResults);
+    }
+  }, [searchTerm, data]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -167,8 +193,30 @@ const Products = () => {
             <hr />
           </div>
         </div>
-        <div className="row justify-content-center">
-          {loading ? <Loading /> : <ShowProducts />}
+
+        <div className="row">
+          <div className="col-md-3">
+            <h4>Product List</h4>
+            <ul className="list-unstyled">
+              {staticProducts.map((item, index) => (
+                <li key={index} className="mb-3">
+                  <strong>{item.productName}</strong>
+                  <br />
+                  <span>${item.price}</span>
+                  <br />
+                  <small>{item.category}</small>
+                  <br />
+                  <small>{item.rating}⭐</small>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="col-md-9">
+            <div className="row justify-content-center">
+              {loading ? <Loading /> : <ShowProducts />}
+            </div>
+          </div>
         </div>
       </div>
     </>

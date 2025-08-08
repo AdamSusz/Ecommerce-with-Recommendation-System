@@ -1,0 +1,58 @@
+[
+    {
+        "productName": "Men's Sweater",
+        "price": "49.99",
+        "category": "Men's Clothing",
+        "description": "Fully cotton sweater perfect for winter!",
+        "rating": 4.8
+    },
+    {
+        "productName": "Womans's Sweater",
+        "price": "49.99",
+        "category": "Women's Clothing",
+        "description": "Fully cotton sweater perfect for winter!",
+        "rating": 4.6
+    },
+    {
+        "productName": "Gold Plated Necklace",
+        "price": "1049.99",
+        "category": "Jewelery",
+        "description": "High quality 12-carat gold plated necklace.",
+        "rating": 4.9
+    },
+    {
+        "productName": "iPhone 16",
+        "price": "859.99",
+        "category": "Electronics",
+        "description": "Brand new iPhone made for your lastest needs. Perfect picture quality and blazing fast speeds",
+        "rating": 3.8
+    },
+    {
+        "productName": "Men's Running Shoes",
+        "price": "15.99",
+        "category": "Men's Clothing",
+        "description": "Just the right shoe for your morning runs.",
+        "rating": 4.2
+    },
+    {
+        "productName": "Women's Running Shoes",
+        "price": "12.99",
+        "category": "Women's Clothing",
+        "description": "Just the right shoe for your morning runs.",
+        "rating": 4.7
+    },
+    {
+        "productName": "Diamond Ring",
+        "price": "12999.99",
+        "category": "Jewlery",
+        "description": "Made with 3 perfectly hand cut diamonds for your special someone.",
+        "rating": 3.8
+    },
+    {
+        "productName": "Speakers",
+        "price": "28.99",
+        "category": "Electronics",
+        "description": "Loud speakers made for music and gaming.",
+        "rating": 2.4
+    }
+]
